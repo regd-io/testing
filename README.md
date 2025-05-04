@@ -20,10 +20,10 @@ regd-testing = "0.1.0"
 ## Usage
 
 ```rust
-use regd_testing::random;
+use regd_testing::rand;
 
 fn main() {
-    let x: u32 = random::generate();
+    let x: u32 = rand::generate();
     println!("Generated random value: {}", x);
 }
 ```

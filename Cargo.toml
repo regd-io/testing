@@ -3,7 +3,6 @@ name = "regd-testing"
 authors = ["Shingo OKAWA <shingo.okawa.g.h.c@gmail.com>"]
 categories = ["development-tools"]
 description = "regd testing is a collection of utilities designed to simplify testing in regd projects."
-#documentation = "https://github.com/regd-io/testing"
 edition = "2024"
 homepage = "https://github.com/regd-io/testing"
 keywords = ["rand", "random", "regd", "testing", "utility"]
