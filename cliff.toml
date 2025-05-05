@@ -11,7 +11,7 @@ body = """
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits %}
-      * {{ commit.message | split(pat="\n") | first | trim }}\
+      * {% if commit.remote.pr_title %}{{ commit.remote.pr_title | trim }}{% else %}{{ commit.message | split(pat="\n") | first | trim }}{% endif %}\
         {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif %}\
         {% if commit.remote.pr_number %} in #{{ commit.remote.pr_number }}{%- endif %}
     {%- endfor %}
@@ -34,21 +34,20 @@ commit_preprocessors = [
   { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](<REPO>/issues/${2}))"},
 ]
 commit_parsers = [
-  { message = "^feat", group = "<!-- 0 -->🚀 Features" },
-  { message = "^fix", group = "<!-- 1 -->🐛 Bug Fixes" },
-  { message = "^doc", group = "<!-- 3 -->📚 Documentation" },
-  { message = "^perf", group = "<!-- 4 -->⚡ Performance" },
-  { message = "^refactor", group = "<!-- 2 -->🚜 Refactor" },
-  { message = "^style", group = "<!-- 5 -->🎨 Styling" },
-  { message = "^test", group = "<!-- 6 -->🧪 Testing" },
-  { message = "^chore\\(release\\): prepare for", skip = true },
-  { message = "^chore\\(deps.*\\)", skip = true },
-  { message = "^chore\\(pr\\)", skip = true },
-  { message = "^chore\\(pull\\)", skip = true },
-  { message = "^chore|^ci", group = "<!-- 7 -->⚙️ Miscellaneous Tasks" },
-  { body = ".*security", group = "<!-- 8 -->🛡️ Security" },
-  { message = "^revert", group = "<!-- 9 -->◀️ Revert" },
-  { message = ".*", group = "<!-- 10 -->💼 Other" },
+  { field = "github.pr_title", pattern = "^feat", group = "<!-- 0 -->🚀 Features" },
+  { field = "github.pr_title", pattern = "^fix", group = "<!-- 1 -->🐛 Bug Fixes" },
+  { field = "github.pr_title", pattern = "^doc", group = "<!-- 3 -->📚 Documentation" },
+  { field = "github.pr_title", pattern = "^perf", group = "<!-- 4 -->⚡ Performance" },
+  { field = "github.pr_title", pattern = "^refactor", group = "<!-- 2 -->🚜 Refactor" },
+  { field = "github.pr_title", pattern = "^style", group = "<!-- 5 -->🎨 Styling" },
+  { field = "github.pr_title", pattern = "^test", group = "<!-- 6 -->🧪 Testing" },
+  { field = "github.pr_title", pattern = "^chore\\(release\\): prepare for", skip = true },
+  { field = "github.pr_title", pattern = "^chore\\(deps.*\\)", skip = true },
+  { field = "github.pr_title", pattern = "^chore\\(pr\\)", skip = true },
+  { field = "github.pr_title", pattern = "^chore\\(pull\\)", skip = true },
+  { field = "github.pr_title", pattern = "^chore|^ci", group = "<!-- 7 -->⚙️ Miscellaneous Tasks" },
+  { field = "github.pr_title", pattern = "^revert", group = "<!-- 9 -->◀️ Revert" },
+  { field = "github.pr_title", pattern = ".*", group = "<!-- 10 -->💼 Other" },
 ]
 filter_commits = false
 topo_order = false
