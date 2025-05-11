@@ -17,8 +17,8 @@
 use std::fs;
 
 use rand::Rng;
-use rand::distr::{Alphanumeric, StandardUniform};
 use rand::distr::uniform::{SampleRange, SampleUniform};
+use rand::distr::{Alphanumeric, StandardUniform};
 use rand::prelude::Distribution;
 
 /// Generates a random value of type `T`.

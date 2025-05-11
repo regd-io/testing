@@ -1,0 +1,71 @@
+name: Continuous Integration
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+env:
+  # Disable full debug symbol generation to speed up CI build and keep memory down.
+  RUSTFLAGS: -C debuginfo=line-tables-only
+  # Disable incremental builds by cargo for CI which should save disk space
+  # and hopefully avoid final link "No space left on device".
+  CARGO_INCREMENTAL: 0
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+      - name: Install minimal stable with clippy and rustfmt
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: default
+          toolchain: '1.85'
+          override: true
+      - name: Check code formatting
+        run: cargo fmt -- --check
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+      - name: Install minimal stable with clippy and rustfmt
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: default
+          toolchain: '1.85'
+          override: true
+      - name: Check build and lint with clippy
+        run: cargo clippy --tests
+      - name: Check documentation
+        run: cargo doc
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+      - name: Install minimal stable with clippy and rustfmt
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: default
+          toolchain: '1.85'
+          override: true
+      - name: Run tests
+        run: cargo test --verbose
