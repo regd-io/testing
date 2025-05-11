@@ -1,0 +1,53 @@
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+permissions:
+  contents: write
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+      - name: Generate CHANGELOG.md and release notes
+        id: changelog
+        run: |
+          mkdir -p dev/changelog
+          git-cliff \
+          --latest \
+          --tag ${{ github.ref_name }} \
+          --github-repo ${{ github.repository }} \
+          --config dev/conf/cliff.toml \
+          -o dev/changelog/${{ github.ref_name }}.md
+          {
+            echo "CHANGELOG<<EOF"
+            cat dev/changelog/${{ github.ref_name }}.md
+            echo "EOF"
+          } >> $GITHUB_ENV
+      - name: Commit and push changelog (if changed)
+        run: |
+          git config --global user.name "github-actions" && \
+          git config --global user.email "github-actions@github.com"
+          git add dev/changelog/${{ github.ref_name }}.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update changelog for ${{ github.ref_name }}"
+            git push origin main
+          fi
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          body: ${{ env.CHANGELOG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
