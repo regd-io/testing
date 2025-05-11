@@ -11,7 +11,7 @@ license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/regd-io/testing"
 rust-version = "1.85"
-version = "0.1.1"
+version = "0.1.2"
 
 [dependencies]
 rand = "0.9.1"
