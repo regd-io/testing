@@ -124,3 +124,55 @@ This project is licensed under the **Apache 2.0 License**.
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## Development
+
+To ensure consistency with CI, you can run the same formatting, linting, and testing steps locally:
+
+<details>
+<summary>Format</summary>
+
+```bash
+# Check formatting only (does not apply changes)
+cargo fmt -- --check
+# Automatically fix formatting issues
+cargo fmt
+```
+
+</details>
+
+<details>
+<summary>Lint</summary>
+
+```bash
+cargo clippy --tests
+```
+
+</details>
+
+<details>
+<summary>Build</summary>
+
+```bash
+cargo build
+```
+
+</details>
+
+<details>
+<summary>Test</summary>
+
+```bash
+cargo test --verbose
+```
+
+</details>
+
+<details>
+<summary>Documentation</summary>
+
+```bash
+cargo doc
+```
+
+<details>
