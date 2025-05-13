@@ -14,7 +14,7 @@ To use `regd-testing` in your Rust project, add the following dependency to your
 
 ```toml
 [dev-dependencies]
-regd-testing = "0.1.1"
+regd-testing = "0.1.2"
 ```
 
 ## Usage
