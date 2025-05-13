@@ -145,7 +145,7 @@ cargo fmt
 <summary>Lint</summary>
 
 ```bash
-cargo clippy --tests
+cargo clippy --all-targets --all-features -- -D warnings
 ```
 
 </details>
