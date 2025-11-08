@@ -1,4 +1,4 @@
-# regd testing
+# regd testing — Testing Library for the regd Project
 
 regd testing is a collection of utility functions and helpers designed to facilitate testing in regd projects. It provides a set of common utilities that enhance test reliability, ease of use, and maintainability.
 
